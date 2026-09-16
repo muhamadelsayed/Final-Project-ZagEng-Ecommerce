@@ -1,4 +1,6 @@
 using System.Text;
+using Ecommerce.Application.Interfaces;
+using Ecommerce.Application.Services;
 using Ecommerce.Domain.Interfaces;
 using Ecommerce.Infrastructure.Data;
 using Ecommerce.Infrastructure.Repositories;
@@ -10,12 +12,17 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // DbContext
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<IAppDbContext, AppDbContext>(options =>
     options.UseLazyLoadingProxies()
     .UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// Services
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IWishlistService, WishlistService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 // JWT
 var jwtKey = builder.Configuration["Jwt:Key"]!;
@@ -35,7 +42,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
