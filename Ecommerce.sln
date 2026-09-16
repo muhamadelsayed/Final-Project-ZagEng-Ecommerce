@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.10.12210.168 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0CE488BE-3841-4C03-BA7C-CC116CC8209B}"
 EndProject
@@ -13,13 +13,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce.Infrastructure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce.API", "src\Ecommerce.API\Ecommerce.API.csproj", "{A9756FC2-2E9D-4F40-A375-7C042354D31C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6B45A784-1535-45F9-8F60-B23409F028F2}"
+	ProjectSection(SolutionItems) = preProject
+		store.html = store.html
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{014868E8-581B-4FED-840D-B9DFAAA52B38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -38,6 +40,9 @@ Global
 		{A9756FC2-2E9D-4F40-A375-7C042354D31C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9756FC2-2E9D-4F40-A375-7C042354D31C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9756FC2-2E9D-4F40-A375-7C042354D31C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{014868E8-581B-4FED-840D-B9DFAAA52B38} = {0CE488BE-3841-4C03-BA7C-CC116CC8209B}
