@@ -1,0 +1,396 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>متجر تجريبي لاختبار الـ API</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .config-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+            .config-box input {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                flex: 1;
+            }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr;
+            gap: 20px;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            background: #fafafa;
+        }
+
+            .card h4 {
+                margin: 10px 0 5px;
+            }
+
+            .card .price {
+                color: #27ae60;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+        button {
+            cursor: pointer;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-cart {
+            background: #3498db;
+            color: white;
+            width: 100%;
+            margin-bottom: 6px;
+        }
+
+        .btn-wish {
+            background: #e74c3c;
+            color: white;
+            width: 100%;
+        }
+
+        .btn-cart:hover {
+            background: #2980b9;
+        }
+
+        .btn-wish:hover {
+            background: #c0392b;
+        }
+
+        .cart-item, .order-item, .wish-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+
+        .btn-del {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        .checkout-box {
+            margin-top: 15px;
+            border-top: 2px dashed #ddd;
+            padding-top: 15px;
+        }
+
+            .checkout-box input {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+
+        .btn-checkout {
+            background: #27ae60;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .log-box {
+            background: #1e1e1e;
+            color: #a6e22e;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h2>🛍️ لوحة اختبار المتجر (E-Commerce Live Tester)</h2>
+            <div>الحالة: <span id="status" style="color: #2ecc71;">متصل بالـ API</span></div>
+        </header>
+
+        <div class="config-box">
+            <label><strong>User ID:</strong></label>
+            <input type="text" id="userId" value="3fa85f64-5717-4562-b3fc-2c963f66afa6">
+            <label><strong>API Base URL:</strong></label>
+            <input type="text" id="apiUrl" value="https://localhost:7227/api">
+            <button onclick="loadAll()" style="background:#2c3e50; color:white;">تحديث البيانات</button>
+        </div>
+
+        <div class="grid">
+            <!-- اليمين: المنتجات والطلبات -->
+            <div>
+                <div class="section">
+                    <h3>📦 المنتجات المتاحة للتجربة</h3>
+                    <div class="product-grid" id="products">
+                        <!-- منتجات وهمية للتجربة السريعة -->
+                        <div class="card">
+                            <h4>سماعة بلوتوث لاسلكية</h4>
+                            <div class="price">450 EGP</div>
+                            <button class="btn-cart" onclick="addToCart('11111111-1111-1111-1111-111111111111', 1)">🛒 أضف للسلة</button>
+                            <button class="btn-wish" onclick="addToWishlist('11111111-1111-1111-1111-111111111111')">❤️ للمفضلة</button>
+                        </div>
+                        <div class="card">
+                            <h4>ساعة يد ذكية</h4>
+                            <div class="price">1200 EGP</div>
+                            <button class="btn-cart" onclick="addToCart('22222222-2222-2222-2222-222222222222', 1)">🛒 أضف للسلة</button>
+                            <button class="btn-wish" onclick="addToWishlist('22222222-2222-2222-2222-222222222222')">❤️ للمفضلة</button>
+                        </div>
+                        <div class="card">
+                            <h4>ماوس ألعاب لاسلكي</h4>
+                            <div class="price">350 EGP</div>
+                            <button class="btn-cart" onclick="addToCart('33333333-3333-3333-3333-333333333333', 1)">🛒 أضف للسلة</button>
+                            <button class="btn-wish" onclick="addToWishlist('33333333-3333-3333-3333-333333333333')">❤️ للمفضلة</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>📜 سجل الطلبات السابقة (Orders)</h3>
+                    <div id="ordersList">جاري التحميل...</div>
+                </div>
+            </div>
+
+            <!-- الشمال: السلة والمفضلة -->
+            <div>
+                <div class="section">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h3>🛒 سلة المشتريات (Cart)</h3>
+                        <button class="btn-del" onclick="clearCart()">تفريغ السلة</button>
+                    </div>
+                    <div id="cartItems">السلة فارغة</div>
+
+                    <div class="checkout-box">
+                        <input type="text" id="address" placeholder="عنوان الشحن (مثال: القاهرة - المعادي)">
+                        <button class="btn-checkout" onclick="checkout()">💳 إتمام الشراء (Checkout)</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>❤️ قائمة المفضلة (Wishlist)</h3>
+                    <div id="wishlistItems">القائمة فارغة</div>
+                </div>
+
+                <div class="section">
+                    <h4>📟 استجابة السيرفر (Logs):</h4>
+                    <div class="log-box" id="logBox">جاهز للاختبار...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function getApi() { return document.getElementById('apiUrl').value; }
+    function getUser() { return document.getElementById('userId').value; }
+
+    function log(msg) {
+        const box = document.getElementById('logBox');
+        box.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}<br>` + box.innerHTML;
+    }
+
+    async function loadCart() {
+        try {
+            const res = await fetch(`${getApi()}/Cart?userId=${getUser()}`);
+            const data = await res.json();
+            const container = document.getElementById('cartItems');
+            if (!data.items || data.items.length === 0) {
+                container.innerHTML = '<p style="color:#888;">السلة فارغة حالياً.</p>';
+                return;
+            }
+            container.innerHTML = data.items.map(item => `
+                <div class="cart-item">
+                    <div>
+                        <strong>منتج:</strong> ${item.productId.substring(0,8)}...<br>
+                        <small>الكمية: ${item.quantity}</small>
+                    </div>
+                    <button class="btn-del" onclick="removeCartItem('${item.id}')">حذف</button>
+                </div>
+            `).join('');
+        } catch (e) {
+            log("فشل في تحميل السلة: " + e.message);
+        }
+    }
+
+    async function addToCart(productId, qty) {
+        try {
+            const res = await fetch(`${getApi()}/Cart/items?userId=${getUser()}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId: productId, quantity: qty })
+            });
+            const data = await res.json();
+            log(data.message || "تمت الإضافة للسلة!");
+            loadCart();
+        } catch (e) { log("خطأ إضافة للسلة: " + e.message); }
+    }
+
+    async function removeCartItem(itemId) {
+        try {
+            await fetch(`${getApi()}/Cart/items/${itemId}?userId=${getUser()}`, { method: 'DELETE' });
+            log("تم حذف العنصر من السلة");
+            loadCart();
+        } catch (e) { log("خطأ حذف من السلة: " + e.message); }
+    }
+
+    async function clearCart() {
+        try {
+            await fetch(`${getApi()}/Cart/clear?userId=${getUser()}`, { method: 'DELETE' });
+            log("تم تفريغ السلة بنجاح");
+            loadCart();
+        } catch (e) { log("خطأ تفريغ السلة: " + e.message); }
+    }
+
+    async function loadWishlist() {
+        try {
+            const res = await fetch(`${getApi()}/Wishlist?userId=${getUser()}`);
+            const data = await res.json();
+            const container = document.getElementById('wishlistItems');
+            if (!data || data.length === 0) {
+                container.innerHTML = '<p style="color:#888;">المفضلة فارغة.</p>';
+                return;
+            }
+            container.innerHTML = data.map(w => `
+                <div class="wish-item">
+                    <div>منتج: ${w.productId.substring(0,8)}...</div>
+                    <button class="btn-del" onclick="removeFromWishlist('${w.productId}')">حذف</button>
+                </div>
+            `).join('');
+        } catch (e) { log("فشل تحميل المفضلة: " + e.message); }
+    }
+
+    async function addToWishlist(productId) {
+        try {
+            const res = await fetch(`${getApi()}/Wishlist/${productId}?userId=${getUser()}`, { method: 'POST' });
+            const data = await res.json();
+            log(data.message || "تمت الإضافة للمفضلة");
+            loadWishlist();
+        } catch (e) { log("خطأ إضافة للمفضلة: " + e.message); }
+    }
+
+    async function removeFromWishlist(productId) {
+        try {
+            await fetch(`${getApi()}/Wishlist/${productId}?userId=${getUser()}`, { method: 'DELETE' });
+            log("تم حذف المنتج من المفضلة");
+            loadWishlist();
+        } catch (e) { log("خطأ حذف من المفضلة: " + e.message); }
+    }
+
+    async function loadOrders() {
+        try {
+            const res = await fetch(`${getApi()}/Order?userId=${getUser()}`);
+            const data = await res.json();
+            const container = document.getElementById('ordersList');
+            if (!data || data.length === 0) {
+                container.innerHTML = '<p style="color:#888;">لا توجد طلبات سابقة.</p>';
+                return;
+            }
+            container.innerHTML = data.map(o => `
+                <div class="order-item">
+                    <div>
+                        <strong>طلب رقم:</strong> ${o.id.substring(0,8)}...<br>
+                        <small>العنوان: ${o.shippingAddress} | الإجمالي: ${o.total} EGP | الحالة: ${o.status}</small>
+                    </div>
+                </div>
+            `).join('');
+        } catch (e) { log("فشل تحميل الطلبات: " + e.message); }
+    }
+
+    async function checkout() {
+        const addr = document.getElementById('address').value;
+        if (!addr) { alert("من فضلك اكتب عنوان الشحن أولاً"); return; }
+
+        try {
+            const res = await fetch(`${getApi()}/Order/checkout?userId=${getUser()}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ shippingAddress: addr, paymentMethod: "CashOnDelivery" })
+            });
+            if (res.ok) {
+                log("🎉 تم إنشاء الطلب بنجاح وتفريغ السلة!");
+                document.getElementById('address').value = '';
+                loadCart();
+                loadOrders();
+            } else {
+                const err = await res.json();
+                log("فشل إتمام الشراء: " + (err.message || res.statusText));
+            }
+        } catch (e) { log("خطأ في الطلب: " + e.message); }
+    }
+
+    function loadAll() {
+        loadCart();
+        loadWishlist();
+        loadOrders();
+    }
+
+    // تحميل البيانات أول ما تفتح الصفحة
+    loadAll();
+    </script>
+</body>
+</html>
