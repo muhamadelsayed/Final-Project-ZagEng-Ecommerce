@@ -1,36 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+using Ecommerce.Application.Interfaces;
 using Ecommerce.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Infrastructure.Data;
 
-public partial class AppDbContext : DbContext
+public partial class AppDbContext : DbContext, IAppDbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
-    {
-    }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-    public virtual DbSet<Cart> Carts { get; set; }
+    public virtual DbSet<Cart> Carts  => Set<Cart>();
 
-    public virtual DbSet<CartItem> CartItems { get; set; }
+    public virtual DbSet<CartItem> CartItems  => Set<CartItem>();
 
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Discount> Discounts { get; set; }
 
-    public virtual DbSet<Order> Orders { get; set; }
+    public virtual DbSet<Order> Orders  => Set<Order>();
 
-    public virtual DbSet<OrderItem> OrderItems { get; set; }
+    public virtual DbSet<OrderItem> OrderItems  => Set<OrderItem>();
 
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<ProductMedia> ProductMedia { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<User> Users  => Set<User>();
 
-    public virtual DbSet<Wishlist> Wishlists { get; set; }
+    public virtual DbSet<Wishlist> Wishlists  => Set<Wishlist>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -55,7 +51,7 @@ public partial class AppDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
         OnModelCreatingPartial(modelBuilder);
-    }
 
+    }
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
