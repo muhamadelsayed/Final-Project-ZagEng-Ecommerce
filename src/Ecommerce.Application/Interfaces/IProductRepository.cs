@@ -15,5 +15,14 @@ public interface IProductRepository
     Task<Product?> GetByIdWithMediaAsync(
     Guid id,
     CancellationToken cancellationToken);
+
+    Task<(IReadOnlyList<Product> Products, int TotalCount)> GetCatalogPagedAsync(
+            int page,
+            int pageSize,
+            Guid? categoryId,
+            decimal? minPrice,
+            decimal? maxPrice,
+            string? sort,
+            CancellationToken cancellationToken);
 }
 

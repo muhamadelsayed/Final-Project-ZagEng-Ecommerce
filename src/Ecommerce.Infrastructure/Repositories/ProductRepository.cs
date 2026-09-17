@@ -77,4 +77,49 @@ public sealed class ProductRepository : IProductRepository
                 p => p.Id == id,
                 cancellationToken);
     }
+
+    public async Task<(IReadOnlyList<Product> Products, int TotalCount)>
+        GetCatalogPagedAsync(
+            int page,
+            int pageSize,
+            Guid? categoryId,
+            decimal? minPrice,
+            decimal? maxPrice,
+            string? sort,
+            CancellationToken cancellationToken)
+    {
+        IQueryable<Product> query = _context.Products
+            .AsNoTracking()
+            .Where(p => !p.IsDeleted);
+
+        if (categoryId.HasValue)
+        {
+            query = query.Where(p => p.CategoryId == categoryId);
+        }
+
+        if (minPrice.HasValue)
+        {
+            query = query.Where(p => p.Price >= minPrice.Value);
+        }
+
+        if (maxPrice.HasValue)
+        {
+            query = query.Where(p => p.Price <= maxPrice.Value);
+        }
+
+        query = sort switch
+        {
+            "desc" => query.OrderByDescending(p => p.Price),
+            _ => query.OrderBy(p => p.Price)
+        };
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var products = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (products, totalCount);
+    }
 }
