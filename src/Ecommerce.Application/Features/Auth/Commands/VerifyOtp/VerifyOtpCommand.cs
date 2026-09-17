@@ -11,11 +11,16 @@ public sealed record VerifyOtpCommand(string Email, string Otp) : IRequest<AuthR
 public sealed class VerifyOtpCommandHandler : IRequestHandler<VerifyOtpCommand, AuthResponseDto>
 {
     private readonly IUserRepository _userRepository;
+    private readonly ISupabaseAuthService _supabaseAuthService;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-    public VerifyOtpCommandHandler(IUserRepository userRepository, IJwtTokenGenerator jwtTokenGenerator)
+    public VerifyOtpCommandHandler(
+        IUserRepository userRepository, 
+        ISupabaseAuthService supabaseAuthService,
+        IJwtTokenGenerator jwtTokenGenerator)
     {
         _userRepository = userRepository;
+        _supabaseAuthService = supabaseAuthService;
         _jwtTokenGenerator = jwtTokenGenerator;
     }
 
@@ -26,12 +31,18 @@ public sealed class VerifyOtpCommandHandler : IRequestHandler<VerifyOtpCommand, 
 
         if (user is null)
             throw new NotFoundException("User", email);
+            
         if (user.IsVerified == true)
             throw new ConflictException("Account is already verified.");
 
-        if (user.OtpCode != request.Otp || user.OtpExpiry < DateTime.UtcNow)
+        // التحقق من الـ OTP عبر Supabase Auth API
+        var supabaseResult = await _supabaseAuthService.VerifyOtpAsync(email, request.Otp);
+        if (supabaseResult is null || string.IsNullOrEmpty(supabaseResult.AccessToken))
+        {
             throw new UnauthorizedException("Invalid or expired OTP.");
-        // Verify the user
+        }
+
+        // تحديث حالة المستخدم محلياً بأنه مفعل
         user.IsVerified = true;
         user.OtpCode = null;
         user.OtpExpiry = null;
@@ -39,6 +50,7 @@ public sealed class VerifyOtpCommandHandler : IRequestHandler<VerifyOtpCommand, 
         await _userRepository.UpdateAsync(user);
         await _userRepository.SaveChangesAsync();
 
+        // توليد الـ JWT الخاص بالتطبيق بتاعنا
         var token = _jwtTokenGenerator.GenerateToken(user);
 
         return new AuthResponseDto

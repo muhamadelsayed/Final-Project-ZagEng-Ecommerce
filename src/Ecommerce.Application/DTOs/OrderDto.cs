@@ -1,12 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Ecommerce.Application.DTOs;
 
-namespace Ecommerce.Application.DTOs
-{
-    internal class OrderDto
-    {
-    }
-}
+public sealed record OrderDto(
+    Guid Id,
+    Guid? ClientId,
+    string CustomerName,
+    IReadOnlyList<OrderItemDto> Items,
+    decimal Total,
+    string ShippingAddress,
+    string PaymentMethod,
+    string Status,
+    DateTime? CreatedAt
+);
+
+public sealed record OrderItemDto(
+    Guid Id,
+    Guid ProductId,
+    string Title,
+    string FeaturedImage,
+    int Quantity,
+    decimal UnitPrice
+);

@@ -1,23 +1,23 @@
-﻿using Ecommerce.Application.DTOs;
+using Ecommerce.Application.DTOs;
 using Ecommerce.Application.Interfaces;
 using MediatR;
 
 namespace Ecommerce.Application.Features.Orders.Queries;
 
-public sealed record GetUserOrdersQuery(Guid UserId) : IRequest<IReadOnlyList<OrderDto>>;
+public sealed record GetAllOrdersQuery : IRequest<IReadOnlyList<OrderDto>>;
 
-public sealed class GetUserOrdersQueryHandler : IRequestHandler<GetUserOrdersQuery, IReadOnlyList<OrderDto>>
+public sealed class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, IReadOnlyList<OrderDto>>
 {
     private readonly IOrderRepository _orderRepository;
 
-    public GetUserOrdersQueryHandler(IOrderRepository orderRepository)
+    public GetAllOrdersQueryHandler(IOrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
     }
 
-    public async Task<IReadOnlyList<OrderDto>> Handle(GetUserOrdersQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<OrderDto>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
     {
-        var orders = await _orderRepository.GetByUserIdAsync(request.UserId, cancellationToken);
+        var orders = await _orderRepository.GetAllAsync(cancellationToken);
 
         return orders.Select(o => new OrderDto(
             o.Id,

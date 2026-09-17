@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ecommerce.Domain.Entities;
 
-namespace Ecommerce.Application.Interfaces
+namespace Ecommerce.Application.Interfaces;
+
+public interface IOrderRepository
 {
-    internal interface IOrderRepository
-    {
-    }
+    Task<IReadOnlyList<Order>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<Order>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task AddAsync(Order order, CancellationToken cancellationToken = default);
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

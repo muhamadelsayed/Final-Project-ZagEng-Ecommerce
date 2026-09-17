@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Ecommerce.Application.DTOs;
 
-namespace Ecommerce.Application.DTOs
-{
-    internal class WishlistDto
-    {
-    }
-}
+public sealed record WishlistDto(
+    Guid Id,
+    Guid ProductId,
+    string Title,
+    decimal Price,
+    string FeaturedImage,
+    DateTime? CreatedAt
+);
