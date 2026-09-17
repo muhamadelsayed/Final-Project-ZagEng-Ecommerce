@@ -8,7 +8,7 @@ namespace Ecommerce.API.Controllers;
 
 [ApiController]
 [Route("api/categories")]
-[Authorize(Roles = "admin")]
+
 public sealed class CategoriesController : ControllerBase
 {
     private readonly ISender _sender;

@@ -2,9 +2,11 @@ using System.Text;
 using Ecommerce.API.Middleware;
 using Ecommerce.Application.Common.Behaviors;
 using Ecommerce.Application.Features.Categories;
+using Ecommerce.Application.Interfaces;
 using Ecommerce.Domain.Interfaces;
 using Ecommerce.Infrastructure.Data;
 using Ecommerce.Infrastructure.Repositories;
+using Ecommerce.Infrastructure.Storage;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,6 +24,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.Configure<CloudinaryOptions>(
+    builder.Configuration.GetSection(CloudinaryOptions.SectionName));
+builder.Services.AddSingleton<IImageStorage, CloudinaryStorage>();
 
 // MediatR handlers live in the Application assembly.
 builder.Services.AddMediatR(configuration =>
