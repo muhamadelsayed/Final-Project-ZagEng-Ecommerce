@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ecommerce.API.Controllers;
 
 [ApiController]
-[Route("api/categories")]
+[Route("api/admin/categories")]
 [Tags("Categories")]
-// [Authorize(Roles = "admin")]
+[Authorize(Roles = "admin")]
 public sealed class CategoriesController : ControllerBase
 {
     private readonly ISender _sender;
