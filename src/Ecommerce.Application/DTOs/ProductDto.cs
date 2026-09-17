@@ -49,7 +49,8 @@ public sealed record ProductListItemDto(
     string Name,
     decimal Price,
     int Stock,
-    string? Category);
+    string? Category,
+    string FeaturedImage);
 
 public sealed record PagedResult<T>(
     IReadOnlyList<T> Items,
