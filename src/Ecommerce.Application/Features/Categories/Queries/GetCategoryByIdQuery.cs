@@ -1,9 +1,10 @@
-using Ecommerce.Domain.Interfaces;
+using Ecommerce.Application.Interfaces;
 using Ecommerce.Domain.Entities;
 using Ecommerce.Application.Common.Exceptions;
+using Ecommerce.Application.DTOs;
 using MediatR;
 
-namespace Ecommerce.Application.Features.Categories;
+namespace Ecommerce.Application.Features.Categories.Queries;
 
 public sealed record GetCategoryByIdQuery(Guid Id) : IRequest<CategoryDto>;
 

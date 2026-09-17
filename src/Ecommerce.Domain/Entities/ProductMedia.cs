@@ -10,6 +10,8 @@ public partial class ProductMedia
     public Guid ProductId { get; set; }
 
     public string Url { get; set; } = null!;
+    public string PublicId { get; set; } = string.Empty;
 
     public virtual Product Product { get; set; } = null!;
+    public int DisplayOrder { get; set; }
 }

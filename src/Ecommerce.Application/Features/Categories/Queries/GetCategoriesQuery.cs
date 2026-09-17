@@ -1,7 +1,8 @@
-using Ecommerce.Domain.Interfaces;
+using Ecommerce.Application.Interfaces;
+using Ecommerce.Application.DTOs;
 using MediatR;
 
-namespace Ecommerce.Application.Features.Categories;
+namespace Ecommerce.Application.Features.Categories.Queries;
 
 public sealed record GetCategoriesQuery : IRequest<IReadOnlyList<CategoryDto>>;
 
