@@ -40,7 +40,9 @@ public sealed class GetCatalogProductsQueryHandler : IRequestHandler<GetCatalogP
             product.Title,
             product.Price,
             product.Stock ?? 0,
-            product.Category?.Name)).ToList();
+            product.Category?.Name,
+            product.FeaturedImage
+            )).ToList();
 
         return new PagedResult<ProductListItemDto>(
             items,
