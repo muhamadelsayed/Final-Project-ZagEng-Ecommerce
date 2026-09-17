@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Ecommerce.Application.Features.Categories;
+namespace Ecommerce.Application.Features.Categories.Commands;
 
 public sealed class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
 {

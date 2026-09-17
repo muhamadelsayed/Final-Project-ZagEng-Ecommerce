@@ -13,4 +13,5 @@ public partial class ProductMedia
     public string PublicId { get; set; } = string.Empty;
 
     public virtual Product Product { get; set; } = null!;
+    public int DisplayOrder { get; set; }
 }

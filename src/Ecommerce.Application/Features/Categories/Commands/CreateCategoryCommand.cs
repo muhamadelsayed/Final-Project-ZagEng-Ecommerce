@@ -1,9 +1,10 @@
 using Ecommerce.Domain.Entities;
-using Ecommerce.Domain.Interfaces;
+using Ecommerce.Application.Interfaces;
 using Ecommerce.Application.Common.Exceptions;
+using Ecommerce.Application.DTOs;
 using MediatR;
 
-namespace Ecommerce.Application.Features.Categories;
+namespace Ecommerce.Application.Features.Categories.Commands;
 
 public sealed record CreateCategoryCommand(string Name) : IRequest<CategoryDto>;
 

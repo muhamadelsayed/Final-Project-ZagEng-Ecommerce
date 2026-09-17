@@ -44,7 +44,8 @@ public sealed class CloudinaryStorage : IImageStorage
             UniqueFilename = true
         };
 
-        var result = await _cloudinary.UploadAsync(uploadParameters, cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
+        var result = await _cloudinary.UploadAsync(uploadParameters);
         if (result.Error is not null)
         {
             throw new InvalidOperationException($"Cloudinary image upload failed: {result.Error.Message}");
@@ -57,6 +58,7 @@ public sealed class CloudinaryStorage : IImageStorage
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(publicId);
 
+        cancellationToken.ThrowIfCancellationRequested();
         var result = await _cloudinary.DestroyAsync(
             new DeletionParams(publicId) { ResourceType = ResourceType.Image });
 

@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using Ecommerce.Application.Features.Categories;
+using Ecommerce.Application.Features.Categories.Commands;
+using Ecommerce.Application.Features.Categories.Queries;
+using Ecommerce.Application.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +10,8 @@ namespace Ecommerce.API.Controllers;
 
 [ApiController]
 [Route("api/categories")]
-
+[Tags("Categories")]
+// [Authorize(Roles = "admin")]
 public sealed class CategoriesController : ControllerBase
 {
     private readonly ISender _sender;

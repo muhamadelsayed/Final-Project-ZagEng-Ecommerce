@@ -1,9 +1,9 @@
-using Ecommerce.Domain.Interfaces;
+using Ecommerce.Application.Interfaces;
 using Ecommerce.Domain.Entities;
 using Ecommerce.Application.Common.Exceptions;
 using MediatR;
 
-namespace Ecommerce.Application.Features.Categories;
+namespace Ecommerce.Application.Features.Categories.Commands;
 
 public sealed record DeleteCategoryCommand(Guid Id) : IRequest;
 

@@ -16,6 +16,8 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
         entity.Property(e => e.CreatedAt).HasDefaultValueSql("now()").HasColumnName("created_at");
         entity.Property(e => e.Description).HasColumnName("description");
         entity.Property(e => e.FeaturedImage).HasColumnName("featured_image");
+        entity.Property(e => e.IsDeleted).HasDefaultValue(false).HasColumnName("is_deleted");
+        entity.Property(e => e.DeletedAt).HasColumnName("deleted_at");
         entity.Property(e => e.IsVirtual).HasDefaultValue((short)0).HasColumnName("is_virtual");
         entity.Property(e => e.Price).HasPrecision(10, 2).HasColumnName("price");
         entity.Property(e => e.Stock).HasDefaultValue(0).HasColumnName("stock");
