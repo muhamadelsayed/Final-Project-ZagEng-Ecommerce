@@ -27,7 +27,9 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.Configure<CloudinaryOptions>(
     builder.Configuration.GetSection(CloudinaryOptions.SectionName));
 builder.Services.AddSingleton<IImageStorage, CloudinaryStorage>();
-
+ builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IWishlistRepository, WishlistRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 // MediatR handlers live in the Application assembly.
 builder.Services.AddMediatR(configuration =>
     configuration.RegisterServicesFromAssembly(typeof(CategoryDto).Assembly));
